@@ -184,13 +184,20 @@ export default {
       }
     },
     async MakingOrder() {
-      let response = await axios.post('/basket_products/making_order', {
-        UserID: this.Auth.user._id,
-        BasketProducts: this.BasketProducts,
-        OrderSummaryPrice: this.OrderSummaryPrice
-      });
+      try {
+        const response = await axios.post('/making_order', {
+          withCredentials: true
+        });
 
-      
+        // Обработка успешного оформления
+        console.log('Заказ оформлен:', response.data);
+
+        await this.LoadBusketProducts();
+
+
+      } catch (error) {
+        console.error('Ошибка оформления заказа:', error);
+      }
     }
   },
   async mounted() {
@@ -291,7 +298,7 @@ export default {
           <p class="summary_price">Цена заказа: {{ OrderSummaryPrice }} ₽</p>
 
           <!-- Кнопка оформления -->
-          <a class="button outlined white flex-row" @click="" >
+          <a class="button outlined white flex-row" @click="MakingOrder" >
             <i class="icon-order icon"></i>
             <p class="nav-button_text">Оформить заказ</p>
           </a>

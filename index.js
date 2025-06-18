@@ -16,7 +16,7 @@ app.set('trust proxy', 1);
 // Подключение политики cors, запрещающей подключение к сайту с разным портов.
 let cors = require('cors')
 app.use(cors({
-    origin: ["http://localhost:5173", "https://sweetdreams-confectionary.ru"], 
+    origin: ["http://localhost:5173", "https://sweet-dreams-confectionery.ru", "https://www.sweet-dreams-confectionery.ru"], 
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     credentials: true // Разрешаем передачу cookie
 }));  
@@ -27,7 +27,8 @@ app.use(cors({
 let session = require('express-session');
 
 //Задача URI для MongoDB
-let MongoURI = 'mongodb://127.0.0.1:27017/SweetDreams';
+// let MongoURI = 'mongodb://localhost:27017/SweetDreams';
+let MongoURI = 'mongodb+srv://BEll:V1F6RCchrlVIVoGE@cluster0.qedlxsc.mongodb.net/SweetDreams'
 
 //Создание объекта для хранения в MongoDB сессий
 let MongoDBSession = require('connect-mongodb-session')(session)
@@ -81,8 +82,7 @@ let schemaProducts = new mongoose.Schema({
     Price: Number,
     Category: String,
     Weight: Number
-},
-{ 
+}, { 
     //Создание временных "марок"
     timestamps: true 
 });
@@ -106,7 +106,26 @@ const schemaBasketProducts = new mongoose.Schema({
 
 let BasketProducts = mongoose.model('basket_products', schemaBasketProducts);
 
+const schemaOrders = new mongoose.Schema({
+    UserID: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
 
+    BasketProducts: [{
+        ProductID: { 
+            type: mongoose.Schema.Types.ObjectId, 
+            ref: 'products' // Связь с коллекцией products
+        },
+        Amount: Number
+    }],
+    
+    OrderSummaryPrice: Number,
+
+    OrderStatus: String
+    
+}, {
+    timestamps: true
+});
+
+let Orders = mongoose.model('orders', schemaOrders);
 
 
 //////// РОУТЫ
@@ -208,9 +227,7 @@ app.get('/basket_products', async function(req, res) {
         select: 'ImagePath Name Description Price Weight' // Выбираем нужные поля
     }).sort({createdAt: -1});
 
-    res.send(BasketProductsObject);
-
-     
+    res.send(BasketProductsObject); 
 
 });
 
@@ -360,15 +377,67 @@ app.post('/basket_products', async function(req,res) {
     res.sendStatus(201);
 });
 
-app.post('/basket_products/making_order', (req, res) => {
-    let {
-        UserID,
-        BasketProducts,
-        OrderSummaryPrice
-    } = req.body
+app.post('/making_order', async function(req, res) {
+    try {
+        const userId = req.session.userId;
+        
+        // Получаем товары из корзины пользователя
+        const basketProducts = await BasketProducts.find({ UserID: userId })
+            .populate({
+                path: 'ProductID',
+                select: 'Price' // Получаем только цену для расчета
+            });
 
-    
-})
+        // Проверяем, что корзина не пуста
+        if (basketProducts.length === 0) {
+            return res.status(400).json({ 
+                type: "error",
+                message: 'Корзина пуста' 
+            });
+        }
+
+        // Формируем массив товаров для заказа
+        const orderProducts = basketProducts.map(item => ({
+            ProductID: item.ProductID._id,
+            Amount: item.Amount
+        }));
+
+        // Рассчитываем общую сумму заказа
+        const summaryPrice = basketProducts.reduce((total, item) => {
+            return total + (item.ProductID.Price * item.Amount);
+        }, 0);
+
+        // Создаем новый заказ
+        const order = new Orders({
+            UserID: userId,
+            BasketProducts: orderProducts,
+            OrderSummaryPrice: summaryPrice,
+            OrderStatus: 'Ожидает подтверждения'
+        });
+
+        // Сохраняем заказ в базе данных
+        await order.save();
+
+        // Очищаем корзину пользователя
+        await BasketProducts.deleteMany({ UserID: userId });
+
+        // Отправляем успешный ответ
+        res.status(201).json({
+            type: "success",
+            message: 'Заказ успешно оформлен',
+            orderId: order._id,
+            summaryPrice: summaryPrice
+        });
+
+    } catch (error) {
+        console.error('Ошибка при оформлении заказа:', error);
+        res.status(500).json({
+            type: "error",
+            message: 'Внутренняя ошибка сервера при оформлении заказа',
+            error: error.message
+        });
+    }
+});
 
 
 // PATCH

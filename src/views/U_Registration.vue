@@ -255,7 +255,7 @@ export default {
         <label for="Input_Name" class=""></label>
       </div>
       
-      <input id="Input_Name"  type="text" required placeholder="Имя" spellcheck="false"data-lpignore="true" 
+      <input id="Input_Name"  type="text" required placeholder="Имя" spellcheck="false" data-lpignore="true" 
       data-form-type="other" title=""  @input="Input_InputEvent" >
     </div>
     

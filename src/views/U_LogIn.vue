@@ -49,7 +49,7 @@ export default {
       if (Input.id == "Input_Email") {
         const Regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-        const hasRussianLetters = /[a-яА-Я]/.test(Input.value);
+        const hasRussianLetters = /[а-яА-Я]/.test(Input.value);
         const hasWhitespace = /\s/.test(Input.value);
         const hasDoubleDots = /\.{2,}/.test(Input.value);
         const domainValid = /\.[a-zA-Z]{2,}$/.test(Input.value);
@@ -72,7 +72,7 @@ export default {
       else if (Input.id == "Input_Password") {
         const Regex = /^[A-Za-z0-9!@#$%^&*_=+-]{8,20}$/;
 
-        const hasRussianLetters = /[a-яА-Я]/.test(Input.value);
+        const hasRussianLetters = /[а-яА-Я]/.test(Input.value);
         
         if (hasRussianLetters) {
           Label.innerHTML = "Допустимо содержание только латинских символов"
