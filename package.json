@@ -9,6 +9,7 @@
     "start": "nodemon index.js"
   },
   "dependencies": {
+    "@vercel/node": "^5.2.2",
     "axios": "^1.9.0",
     "bcrypt": "^6.0.0",
     "connect-mongodb-session": "^5.0.0",
