@@ -2,7 +2,6 @@
   "name": "sweetdreams",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -17,6 +16,7 @@
     "express": "^4.21.2",
     "express-session": "^1.18.1",
     "lodash.debounce": "^4.0.8",
+    "mongodb": "^6.17.0",
     "mongoose": "^8.11.0",
     "nodemon": "^3.1.9",
     "vanilla-tilt": "^1.8.1",
