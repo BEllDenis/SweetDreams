@@ -19,7 +19,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 
-
 // Настройка базового URL для API
 // В режиме разработки используем переменную окружения VITE_API_URL (например, http://localhost:3000)
 // В продакшене обращаемся по относительному пути '/api'

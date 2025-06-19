@@ -7,7 +7,7 @@ export default {
   data() {
     return {
       NewProducts: [],
-      UserComments: []
+
     }
   },
   methods: {
@@ -44,7 +44,6 @@ export default {
   },
   mounted() {
     this.LoadNewProducts();
-    this.LoadUserComments();
     
     this.initTilt();
   },
