@@ -28,7 +28,7 @@ let session = require('express-session');
 
 //Задача URI для MongoDB
 // let MongoURI = 'mongodb://localhost:27017/SweetDreams';
-let MongoURI = 'mongodb+srv://BEll:V1F6RCchrlVIVoGE@cluster0.qedlxsc.mongodb.net/SweetDreams'
+let MongoURI = 'mongodb+srv://BEll:V1F6RCchrlVIVoGE@cluster0.2cdsn0y.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/SweetDreams'
 
 //Создание объекта для хранения в MongoDB сессий
 let MongoDBSession = require('connect-mongodb-session')(session)
