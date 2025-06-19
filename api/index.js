@@ -190,7 +190,7 @@ let Orders = mongoose.model('orders', schemaOrders);
 //////// РОУТЫ
 
 // GET
-app.get('/users', async function (req, res) {
+app.get('/api/users', async function (req, res) {
     
 
     let UsersObject = await Users.find({Gender: 'man'}).sort({ createdAt: -1});
@@ -198,13 +198,13 @@ app.get('/users', async function (req, res) {
     res.send(UsersObject);
 });
 
-app.get('/new_products', async function (req, res) {
+app.get('/api/new_products', async function (req, res) {
     let NewProducts = await Products.find().sort({createdAt: -1}).limit(4);
 
     res.send(NewProducts);
 });
 
-app.get('/catalog', async function (req, res) {
+app.get('/api/catalog', async function (req, res) {
     try {
         const { SelectedCategories, SelectedTypeOfSort } = req.query;
 
@@ -258,7 +258,7 @@ app.get('/catalog', async function (req, res) {
     }
 });
 
-app.get('/api/me', async (req, res) => {
+app.get('/api/api/me', async (req, res) => {
     try {
         //Проверка наличия сессии (пользовательского ID сохраненного в ней)
         if (!req.session.userId)
@@ -277,7 +277,7 @@ app.get('/api/me', async (req, res) => {
     }
 });
 
-app.get('/basket_products', async function(req, res) {
+app.get('/api/basket_products', async function(req, res) {
     let { User_id } = req.query;
 
     let BasketProductsObject = await BasketProducts.find({ UserID: User_id })
@@ -293,7 +293,7 @@ app.get('/basket_products', async function(req, res) {
 
 
 // POST
-app.post('/registration', async function (req, res) {
+app.post('/api/registration', async function (req, res) {
     try {
         let Name = req.body.Name;
         let Surname = req.body.Surname;
@@ -358,7 +358,7 @@ app.post('/registration', async function (req, res) {
 }
 });
 
-app.post('/login', async function(req, res) {
+app.post('/api/login', async function(req, res) {
 
     try {
         let Email = req.body.Email;
@@ -414,7 +414,7 @@ app.post('/login', async function(req, res) {
     }
 })
 
-app.post('/logout', (req, res) => {
+app.post('/api/logout', (req, res) => {
     req.session.destroy(err => {
         if (err) return res.status(500).json({ message: 'Ошибка при выходе из системы' });
         
@@ -423,7 +423,7 @@ app.post('/logout', (req, res) => {
     });
 });
 
-app.post('/basket_products', async function(req,res) {
+app.post('/api/basket_products', async function(req,res) {
     let { Product_id, User_id } = req.body;
 
     let basket_product = new BasketProducts({
@@ -436,7 +436,7 @@ app.post('/basket_products', async function(req,res) {
     res.sendStatus(201);
 });
 
-app.post('/making_order', async function(req, res) {
+app.post('/api/making_order', async function(req, res) {
     try {
         const userId = req.session.userId;
         
@@ -500,7 +500,7 @@ app.post('/making_order', async function(req, res) {
 
 
 // PATCH
-app.patch('/basket_products/change_amount', async function(req,res) {
+app.patch('/api/basket_products/change_amount', async function(req,res) {
     let { BasketProduct_id, Operation } = req.body;
 
     let basket_product = await BasketProducts.findById(BasketProduct_id)
@@ -516,7 +516,7 @@ app.patch('/basket_products/change_amount', async function(req,res) {
 });
 
 //DELETE
-app.delete('/basket_products/delete', async function(req,res) {
+app.delete('/api/basket_products/delete', async function(req,res) {
     let { Product_id } = req.body;
 
     await BasketProducts.deleteOne({
