@@ -73,6 +73,10 @@ const serverless = require('serverless-http');
 const app = express();
 app.use(express.json());
 
+// --- Доверие прокси (Vercel) ---
+app.set('trust proxy', 1);
+
+
 // --- Настройка CORS ---
 const allowedOrigins = [
   'https://sweet-dreams-confectionery.ru',
@@ -87,12 +91,13 @@ app.use(cors({
   methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS']
 }));
 
-// --- Доверие прокси (Vercel) ---
-app.set('trust proxy', 1);
+
+// Environment variables
+const MONGO_URI = process.env.MONGO_URI;
+const SESSION_SECRET = process.env.SESSION_SECRET;
 
 // --- Подключение к MongoDB ---
 // Задайте MONGO_URI и SESSION_SECRET в настройках Vercel Environment Variables
-const MONGO_URI = process.env.MONGO_URI;
 mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // --- Сессии в MongoDB ---
@@ -102,7 +107,7 @@ const store = new MongoDBSession({
 });
 
 app.use(session({
-  secret: process.env.SESSION_SECRET,
+  secret: SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   store: store,
@@ -185,12 +190,12 @@ const schemaOrders = new mongoose.Schema({
 let Orders = mongoose.model('orders', schemaOrders);
 
 
-
-
 //////// РОУТЫ
 
+const router = express.Router();
+
 // GET
-app.get('/api/users', async function (req, res) {
+router.get('/users', async function (req, res) {
     
 
     let UsersObject = await Users.find({Gender: 'man'}).sort({ createdAt: -1});
@@ -198,13 +203,13 @@ app.get('/api/users', async function (req, res) {
     res.send(UsersObject);
 });
 
-app.get('/api/new_products', async function (req, res) {
+router.get('/new_products', async function (req, res) {
     let NewProducts = await Products.find().sort({createdAt: -1}).limit(4);
 
     res.send(NewProducts);
 });
 
-app.get('/api/catalog', async function (req, res) {
+router.get('/catalog', async function (req, res) {
     try {
         const { SelectedCategories, SelectedTypeOfSort } = req.query;
 
@@ -258,7 +263,7 @@ app.get('/api/catalog', async function (req, res) {
     }
 });
 
-app.get('/api/api/me', async (req, res) => {
+router.get('/me', async (req, res) => {
     try {
         //Проверка наличия сессии (пользовательского ID сохраненного в ней)
         if (!req.session.userId)
@@ -277,7 +282,7 @@ app.get('/api/api/me', async (req, res) => {
     }
 });
 
-app.get('/api/basket_products', async function(req, res) {
+router.get('/basket_products', async function(req, res) {
     let { User_id } = req.query;
 
     let BasketProductsObject = await BasketProducts.find({ UserID: User_id })
@@ -293,7 +298,7 @@ app.get('/api/basket_products', async function(req, res) {
 
 
 // POST
-app.post('/api/registration', async function (req, res) {
+router.post('/registration', async function (req, res) {
     try {
         let Name = req.body.Name;
         let Surname = req.body.Surname;
@@ -358,7 +363,7 @@ app.post('/api/registration', async function (req, res) {
 }
 });
 
-app.post('/api/login', async function(req, res) {
+router.post('/login', async function(req, res) {
 
     try {
         let Email = req.body.Email;
@@ -414,7 +419,7 @@ app.post('/api/login', async function(req, res) {
     }
 })
 
-app.post('/api/logout', (req, res) => {
+router.post('/logout', (req, res) => {
     req.session.destroy(err => {
         if (err) return res.status(500).json({ message: 'Ошибка при выходе из системы' });
         
@@ -423,7 +428,7 @@ app.post('/api/logout', (req, res) => {
     });
 });
 
-app.post('/api/basket_products', async function(req,res) {
+router.post('/basket_products', async function(req,res) {
     let { Product_id, User_id } = req.body;
 
     let basket_product = new BasketProducts({
@@ -436,7 +441,7 @@ app.post('/api/basket_products', async function(req,res) {
     res.sendStatus(201);
 });
 
-app.post('/api/making_order', async function(req, res) {
+router.post('/making_order', async function(req, res) {
     try {
         const userId = req.session.userId;
         
@@ -500,7 +505,7 @@ app.post('/api/making_order', async function(req, res) {
 
 
 // PATCH
-app.patch('/api/basket_products/change_amount', async function(req,res) {
+router.patch('/basket_products/change_amount', async function(req,res) {
     let { BasketProduct_id, Operation } = req.body;
 
     let basket_product = await BasketProducts.findById(BasketProduct_id)
@@ -516,7 +521,7 @@ app.patch('/api/basket_products/change_amount', async function(req,res) {
 });
 
 //DELETE
-app.delete('/api/basket_products/delete', async function(req,res) {
+router.delete('/basket_products/delete', async function(req,res) {
     let { Product_id } = req.body;
 
     await BasketProducts.deleteOne({
