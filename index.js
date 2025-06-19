@@ -15,23 +15,11 @@ app.set('trust proxy', 1);
 
 // Подключение политики cors, запрещающей подключение к сайту с разным портов.
 let cors = require('cors')
-// app.use(cors({
-//     origin: ["http://localhost:5173", "https://sweet-dreams-confectionery.ru", "https://www.sweet-dreams-confectionery.ru"], 
-//     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-//     credentials: true // Разрешаем передачу cookie
-// }));  
-
 app.use(cors({
-    origin: (origin, callback) => {
-      if (!origin || origin.includes('sweet-dreams-confectionery.ru')) {
-        callback(null, true);
-      } else {
-        callback(new Error('CORS blocked'));
-      }
-    },
-    credentials: true
-}));
-
+    origin: ["http://localhost:5173", "https://sweet-dreams-confectionery.ru", "https://www.sweet-dreams-confectionery.ru"], 
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    credentials: true // Разрешаем передачу cookie
+}));  
 
 
 //////// НАСТРОЙКА СЕССИЙ И ИХ ХРАНЕНИЯ В MONGODB
@@ -59,7 +47,6 @@ app.use(session({
         secure: true, // Для HTTPS измените на true
         httpOnly: true, // Запретить доступ к cookie через JavaScript
         sameSite: 'none', // Защита от CSRF
-        domain: '.sweet-dreams-confectionery.ru'
     }
 }));
 
