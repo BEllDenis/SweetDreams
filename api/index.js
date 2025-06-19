@@ -255,7 +255,7 @@ router.get('/catalog', async function (req, res) {
         
         console.log(products)
 
-        res.send(products);
+        res.json(products);
 
     } catch (error) {
         console.error('Ошибка при получении каталога:', error);
