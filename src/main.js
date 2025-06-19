@@ -28,7 +28,11 @@ const apiBaseURL = import.meta.env.MODE === 'development' ? (import.meta.env.VIT
 axios.defaults.baseURL = apiBaseURL
 axios.defaults.withCredentials = true
 
+console.log(axios.defaults.baseURL);
+
 import router from './router.js'
+
+
 
 // Инициализация Vue приложения
 createApp(App).use(router).mount('#app')
