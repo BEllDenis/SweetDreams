@@ -41,14 +41,6 @@ export default {
       this.initTilt();
 
     },
-    async LoadUserComments() {
-      let response = await axios.get('/user_comments', {});
-
-      this.UserComments = response.data;
-      
-      this.initTilt();
-
-    }
   },
   mounted() {
     this.LoadNewProducts();

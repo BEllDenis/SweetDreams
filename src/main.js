@@ -1,16 +1,37 @@
 
-// Все для VUE
-import axios from 'axios';
-// axios.defaults.baseURL = 'http://localhost:3000';  // Используйте HTTPS
-axios.defaults.baseURL = process.env.VUE_APP_API_URL || 'https://sweet-dreams-confectionery.ru'; 
-axios.defaults.withCredentials = true;
+// // Все для VUE
+// import axios from 'axios';
+// // axios.defaults.baseURL = 'http://localhost:3000';  // Используйте HTTPS
+// axios.defaults.baseURL = process.env.VUE_APP_API_URL || 'https://sweet-dreams-confectionery.ru'; 
+// axios.defaults.withCredentials = true;
 
+// import { createApp } from 'vue'
+// import App from './App.vue'
+
+// import router from './router.js'
+
+// // Рендер в HTML
+// createApp(App).use(router).mount('#app')
+
+
+
+// src/main.js
 import { createApp } from 'vue'
 import App from './App.vue'
 
+
+// Настройка базового URL для API
+// В режиме разработки используем переменную окружения VITE_API_URL (например, http://localhost:3000)
+// В продакшене обращаемся по относительному пути '/api'
+
+import axios from 'axios'
+const apiBaseURL = import.meta.env.MODE === 'development' ? (import.meta.env.VITE_API_URL || 'http://localhost:3000') : '/api'
+axios.defaults.baseURL = apiBaseURL
+axios.defaults.withCredentials = true
+
 import router from './router.js'
 
-// Рендер в HTML
+// Инициализация Vue приложения
 createApp(App).use(router).mount('#app')
 
 
