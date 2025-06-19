@@ -1,7 +1,7 @@
 
 // Все для VUE
 import axios from 'axios';
-axios.defaults.baseURL = 'https://sweet-dreams-confectionery.ru';  
+axios.defaults.baseURL = 'https://www.sweet-dreams-confectionery.ru';  
 axios.defaults.withCredentials = true;
 
 import { createApp } from 'vue'
