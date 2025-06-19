@@ -13,14 +13,8 @@
     {
       "source": "/api/:path*",
       "headers": [
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "https://sweet-dreams-confectionery.ru" 
-        },
-        {
-          "key": "Access-Control-Allow-Credentials",
-          "value": "true"
-        }
+        { "key": "Access-Control-Allow-Origin", "value": "https://sweet-dreams-confectionery.ru" },
+        { "key": "Access-Control-Allow-Credentials", "value": "true" }
       ]
     }
   ]

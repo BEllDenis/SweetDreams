@@ -1,7 +1,8 @@
 
 // Все для VUE
 import axios from 'axios';
-axios.defaults.baseURL = 'http://localhost:3000';  // Используйте HTTPS
+// axios.defaults.baseURL = 'http://localhost:3000';  // Используйте HTTPS
+axios.defaults.baseURL = process.env.VUE_APP_API_URL || 'https://api.sweet-dreams-confectionery.ru'; 
 axios.defaults.withCredentials = true;
 
 import { createApp } from 'vue'
