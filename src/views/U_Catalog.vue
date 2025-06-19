@@ -106,7 +106,7 @@ export default {
     },
     async LoadProducts() {
       
-      let response = await axios.get('/catalog', {
+      let response = await axios.get('/api/catalog', {
         params: {
           SelectedCategories: this.SelectedCategories,
           SelectedTypeOfSort: this.SelectedTypeOfSort
@@ -164,7 +164,7 @@ export default {
 
       this.Products[index].InBasket = true;
       
-      await axios.post('/basket_products', {
+      await axios.post('/api/basket_products', {
         Product_id: id,
         User_id: this.Auth.user._id
       }, { withCredentials: true });
@@ -212,7 +212,7 @@ export default {
 
       this.ProductForDelete.InBasket = false;
 
-      let response = await axios.delete('/basket_products/delete', { 
+      let response = await axios.delete('/api/basket_products/delete', { 
         data: { Product_id: id }, 
         withCredentials: true 
       });
