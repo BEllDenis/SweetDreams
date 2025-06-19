@@ -20,7 +20,6 @@ let cors = require('cors')
 //     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
 //     credentials: true // Разрешаем передачу cookie
 // }));  
-
 app.use(cors({
     origin: (origin, callback) => {
       if (!origin || origin.includes('sweet-dreams-confectionery.ru')) {
@@ -56,9 +55,6 @@ app.use(session({
     store: store,
     cookie: {
         maxAge: 604800000, // Время жизни cookie (7 дней)
-        secure: true, // Для HTTPS измените на true
-        httpOnly: true, // Запретить доступ к cookie через JavaScript
-        sameSite: 'none', // Защита от CSRF
         domain: '.sweet-dreams-confectionery.ru'
     }
 }));
