@@ -23,10 +23,11 @@ let cors = require('cors')
 
 app.use(cors({
     origin: (origin, callback) => {
-        if (!origin || origin.includes('sweet-dreams-confectionery.ru')) {
-            callback(null, true);
+        const allowedOrigins = ['https://sweet-dreams-confectionery.ru',  'https://www.sweet-dreams-confectionery.ru']; 
+        if (!origin || allowedOrigins.includes(origin)) {
+          callback(null, true);
         } else {
-            callback(new Error('CORS blocked'));
+          callback(new Error('CORS blocked'));
         }
     },
     credentials: true
@@ -58,6 +59,7 @@ app.use(session({
         secure: true, // Для HTTPS измените на true
         httpOnly: true, // Запретить доступ к cookie через JavaScript
         sameSite: 'none', // Защита от CSRF
+        domain: '.sweet-dreams-confectionery.ru'
     }
 }));
 
