@@ -28,7 +28,7 @@ let session = require('express-session');
 
 //Задача URI для MongoDB
 // let MongoURI = 'mongodb://localhost:27017/SweetDreams';
-let MongoURI = 'mongodb+srv://BEll:V1F6RCchrlVIVoGE@cluster0.2cdsn0y.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/SweetDreams'
+let MongoURI = 'mongodb+srv://BEll:V1F6RCchrlVIVoGE@cluster0.2cdsn0y.mongodb.net/SweetDreams?retryWrites=true&w=majority&appName=Cluster0'
 
 //Создание объекта для хранения в MongoDB сессий
 let MongoDBSession = require('connect-mongodb-session')(session)
@@ -45,9 +45,9 @@ app.use(session({
     store: store,
     cookie: {
         maxAge: 604800000, // Время жизни cookie (7 дней)
-        secure: false, // Для HTTPS измените на true
+        secure: true, // Для HTTPS измените на true
         httpOnly: true, // Запретить доступ к cookie через JavaScript
-        sameSite: 'lax' // Защита от CSRF
+        sameSite: 'none' // Защита от CSRF
     }
 }));
 
