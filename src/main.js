@@ -24,8 +24,7 @@ import App from './App.vue'
 // В продакшене обращаемся по относительному пути '/api'
 
 import axios from 'axios'
-const apiBaseURL = import.meta.env.MODE === 'development' ? (import.meta.env.VITE_API_URL || 'http://localhost:3000') : '/api'
-axios.defaults.baseURL = apiBaseURL
+axios.defaults.baseURL = 'https://sweet-dreams-confectionery.ru'
 axios.defaults.withCredentials = true
 
 console.log(axios.defaults.baseURL);

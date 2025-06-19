@@ -93,8 +93,7 @@ app.use(cors({
 
 
 // Environment variables
-const MONGO_URI = process.env.MONGO_URI;
-const SESSION_SECRET = process.env.SESSION_SECRET;
+const MONGO_URI = 'mongodb+srv://BEll:V1F6RCchrlVIVoGE@cluster0.2cdsn0y.mongodb.net/SweetDreams?retryWrites=true&w=majority&appName=Cluster0';
 
 // --- Подключение к MongoDB ---
 // Задайте MONGO_URI и SESSION_SECRET в настройках Vercel Environment Variables
@@ -107,7 +106,7 @@ const store = new MongoDBSession({
 });
 
 app.use(session({
-  secret: SESSION_SECRET,
+  secret: 'my-secret-key',
   resave: false,
   saveUninitialized: false,
   store: store,
@@ -116,7 +115,6 @@ app.use(session({
     secure: true,
     sameSite: 'none',
     httpOnly: true,
-    domain: 'sweet-dreams-confectionery.ru'
   }
 }));
 
@@ -193,6 +191,8 @@ let Orders = mongoose.model('orders', schemaOrders);
 //////// РОУТЫ
 
 const router = express.Router();
+
+app.use('/api', router);
 
 // GET
 router.get('/users', async function (req, res) {
