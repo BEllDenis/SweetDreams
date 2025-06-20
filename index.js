@@ -1,75 +1,124 @@
-//////// Настройка Express
-let express = require(`express`);
-let app = express();
+// //////// Настройка Express
+// let express = require(`express`);
+// let app = express();
+// app.use(express.json());
+// app.use(express.static('public'));
+// let bcrypt = require('bcrypt');
+// const serverless = require('serverless-http')
+
+// // Инициализация сервера
+// let port = 3000;
+// app.listen(port, function () {
+//     console.log(`Сервер запущен: http://localhost:${port}`)
+// });
+
+// // --- Настройка CORS ---
+// const allowedOrigins = ['https://sweet-dreams-confectionery.ru', 'https://www.sweet-dreams-confectionery.ru'];
+// app.use(cors({
+//     origin: (origin, callback) => {
+//         if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+//         callback(new Error(`CORS blocked for ${origin}`));
+//     },
+//     credentials: true,
+//     methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS']
+// }));
+  
+// // --- Доверие прокси (Vercel) ---
+// app.set('trust proxy', 1);
+
+
+// //////// НАСТРОЙКА СЕССИЙ И ИХ ХРАНЕНИЯ В MONGODB
+// let session = require('express-session');
+
+// //Задача URI для MongoDB
+// // let MongoURI = 'mongodb://localhost:27017/SweetDreams';
+// let MongoURI = 'mongodb+srv://BEll:V1F6RCchrlVIVoGE@cluster0.2cdsn0y.mongodb.net/SweetDreams?retryWrites=true&w=majority&appName=Cluster0'
+
+// //Создание объекта для хранения в MongoDB сессий
+// let MongoDBSession = require('connect-mongodb-session')(session)
+// let store = new MongoDBSession({
+//     uri: MONGO_URI,
+//     collection: 'userSessions'
+// });
+
+// // Настройка сессии
+// app.use(session({
+//     secret: 'BEll_CookieSecretKey171814721ion',
+//     resave: false,
+//     saveUninitialized: false,
+//     store: store,
+//     cookie: {
+//         maxAge: 604800000, // Время жизни cookie (7 дней)
+//         secure: true,
+//         sameSite: 'none',
+//         httpOnly: true,
+//         domain: 'sweet-dreams-confectionery.ru'
+//     }
+// }));
+
+// //////// НАСТРОЙКА БД
+// let mongoose = require('mongoose');
+// mongoose.connect(MongoURI);
+
+// Импорт зависимостей
+const express = require('express');
+const cors = require('cors');
+const session = require('express-session');
+const MongoDBSession = require('connect-mongodb-session')(session);
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const serverless = require('serverless-http');
+
+// Express-приложение
+const app = express();
 app.use(express.json());
-app.use(express.static('public'));
-let bcrypt = require('bcrypt');
 
-// Инициализация сервера
-let port = 3000;
-app.listen(port, function () {
-    console.log(`Сервер запущен: http://localhost:${port}`)
-});
-
+// --- Доверие прокси (Vercel) ---
 app.set('trust proxy', 1);
 
-// Подключение политики cors, запрещающей подключение к сайту с разным портов.
-let cors = require('cors')
-// app.use(cors({
-//     origin: ["http://localhost:5173", "https://sweet-dreams-confectionery.ru", "https://www.sweet-dreams-confectionery.ru"], 
-//     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-//     credentials: true // Разрешаем передачу cookie
-// }));  
 
+// --- Настройка CORS ---
+const allowedOrigins = [
+  'https://sweet-dreams-confectionery.ru',
+  'https://www.sweet-dreams-confectionery.ru'
+];
 app.use(cors({
-    origin: (origin, callback) => {
-        const allowedOrigins = ['https://sweet-dreams-confectionery.ru',  'https://www.sweet-dreams-confectionery.ru']; 
-        if (!origin || allowedOrigins.includes(origin)) {
-          callback(null, true);
-        } else {
-          callback(new Error('CORS blocked'));
-        }
-    },
-    credentials: true
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+    callback(new Error(`CORS blocked for ${origin}`));
+  },
+  credentials: true,
+  methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS']
 }));
 
 
-//////// НАСТРОЙКА СЕССИЙ И ИХ ХРАНЕНИЯ В MONGODB
-let session = require('express-session');
+// Environment variables
+const MONGO_URI = 'mongodb+srv://vercel-admin-user-6854cb454214172350a47361:p5MODLyhoJcI8zTY@cluster0.2cdsn0y.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 
-//Задача URI для MongoDB
-// let MongoURI = 'mongodb://localhost:27017/SweetDreams';
-let MongoURI = 'mongodb+srv://BEll:V1F6RCchrlVIVoGE@cluster0.2cdsn0y.mongodb.net/SweetDreams?retryWrites=true&w=majority&appName=Cluster0'
+// --- Подключение к MongoDB ---
+// Задайте MONGO_URI и SESSION_SECRET в настройках Vercel Environment Variables
+mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
-//Создание объекта для хранения в MongoDB сессий
-let MongoDBSession = require('connect-mongodb-session')(session)
-let store = new MongoDBSession({
-    uri: MongoURI,
-    collection: 'userSessions'
+// --- Сессии в MongoDB ---
+const store = new MongoDBSession({
+  uri: MONGO_URI,
+  collection: 'userSessions'
 });
 
-// Настройка сессии
 app.use(session({
-    secret: 'my-secret-key',
-    resave: false,
-    saveUninitialized: false,
-    store: store,
-    cookie: {
-        maxAge: 604800000, // Время жизни cookie (7 дней)
-        secure: true, // Для HTTPS измените на true
-        httpOnly: true, // Запретить доступ к cookie через JavaScript
-        sameSite: 'none', // Защита от CSRF
-        domain: '.sweet-dreams-confectionery.ru'
-    }
+  secret: 'my-secret-key',
+  resave: false,
+  saveUninitialized: false,
+  store: store,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24 * 7, // 7 дней
+    secure: true,
+    sameSite: 'none',
+    httpOnly: true,
+  }
 }));
 
 
-
-
-
-//////// НАСТРОЙКА БД
-let mongoose = require('mongoose');
-mongoose.connect(MongoURI);
 
 // СОЗДАНИЕ СХЕМ ДАННЫХ ДЛЯ КОЛЕКЦИЙ.
 let schemaUsers = new mongoose.Schema({
@@ -84,8 +133,8 @@ let schemaUsers = new mongoose.Schema({
     //Создание временных "марок"    
     timestamps: true 
 });
-
 let Users = mongoose.model('users', schemaUsers);
+
 
 let schemaProducts = new mongoose.Schema({
     ImagePath: String,
@@ -98,8 +147,8 @@ let schemaProducts = new mongoose.Schema({
     //Создание временных "марок"
     timestamps: true 
 });
-
 let Products = mongoose.model('products', schemaProducts);
+
 
 // Схема корзины
 const schemaBasketProducts = new mongoose.Schema({
@@ -115,8 +164,8 @@ const schemaBasketProducts = new mongoose.Schema({
 }, {
     timestamps: true
 });
-
 let BasketProducts = mongoose.model('basket_products', schemaBasketProducts);
+
 
 const schemaOrders = new mongoose.Schema({
     UserID: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
@@ -130,17 +179,17 @@ const schemaOrders = new mongoose.Schema({
     }],
     
     OrderSummaryPrice: Number,
-
     OrderStatus: String
     
 }, {
     timestamps: true
 });
-
 let Orders = mongoose.model('orders', schemaOrders);
 
 
 //////// РОУТЫ
+
+
 
 // GET
 app.get('/users', async function (req, res) {
@@ -203,7 +252,7 @@ app.get('/catalog', async function (req, res) {
         
         console.log(products)
 
-        res.send(products);
+        res.json(products);
 
     } catch (error) {
         console.error('Ошибка при получении каталога:', error);
@@ -211,7 +260,7 @@ app.get('/catalog', async function (req, res) {
     }
 });
 
-app.get('/api/me', async (req, res) => {
+app.get('/me', async (req, res) => {
     try {
         //Проверка наличия сессии (пользовательского ID сохраненного в ней)
         if (!req.session.userId)
@@ -480,3 +529,7 @@ app.delete('/basket_products/delete', async function(req,res) {
     res.sendStatus(200);
 })
 
+
+// В конце экспортируем handler
+module.exports = app
+module.exports.handler = serverless(app)

@@ -24,7 +24,7 @@ import App from './App.vue'
 // В продакшене обращаемся по относительному пути '/api'
 
 import axios from 'axios'
-axios.defaults.baseURL = '/api'
+// axios.defaults.baseURL = '/'
 axios.defaults.withCredentials = true
 
 // console.log(axios.defaults.baseURL);
