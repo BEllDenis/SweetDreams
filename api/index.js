@@ -95,17 +95,10 @@ app.use(cors({
 // Environment variables
 const MONGO_URI = 'mongodb+srv://BEll:V1F6RCchrlVIVoGE@cluster0.2cdsn0y.mongodb.net/SweetDreams?retryWrites=true&w=majority&appName=Cluster0';
 
-const start = Date.now();
-await mongoose.connect(MONGO_URI);
-console.log('Connected to MongoDB in', Date.now()-start, 'ms');
 
 // --- Подключение к MongoDB ---
 // Задайте MONGO_URI и SESSION_SECRET в настройках Vercel Environment Variables
-// mongoose.connect(MONGO_URI);
-
-const startQuery = Date.now();
-await Products.find(...);
-console.log('Query time:', Date.now() - startQuery, 'ms');
+mongoose.connect(MONGO_URI);
 
 // --- Сессии в MongoDB ---
 const store = new MongoDBSession({
