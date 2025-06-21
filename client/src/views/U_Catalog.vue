@@ -1,5 +1,5 @@
 <script>
-import C_IsNotAuth from '../components/С_IsNotAuth.vue';
+import C_IsNotAuth from '@/components/С_IsNotAuth.vue';
 import C_Preloader from '@/components/C_Preloader.vue';
 
 import axios from 'axios'

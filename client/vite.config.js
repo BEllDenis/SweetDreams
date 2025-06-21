@@ -21,20 +21,22 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
-  root: 'client',
+  root: 'client',             // Указывает корень проекта, где лежит index.html
   base: './',
   plugins: [vue()],
   resolve: {
-    alias: {'@': fileURLToPath(new URL('./client/src', import.meta.url)) }
+    alias: {
+      // Для удобных импортов: '@/' → 'client/src/'
+      '@': fileURLToPath(new URL('./src', import.meta.url))
+    }
   },
   server: {
-    // Для локального dev-сервера
     proxy: {
       '/api': 'http://localhost:3000'
     }
   },
   build: {
-    outDir: '../client/dist',
+    outDir: 'dist',            // Папка сборки внутри client/
     emptyOutDir: true
   }
 })
