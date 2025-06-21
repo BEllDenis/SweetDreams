@@ -133,7 +133,7 @@ export default {
         };
         
       } catch (error) {
-        console.error('Ошибка авторизации:', error);
+        console.error('Ошибка авторизациии:', error);
 
         this.Auth = { 
           isChecked: true, 
