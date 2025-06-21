@@ -22,7 +22,7 @@ import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
   root: 'client',
-  base: '/',
+  base: './',
   plugins: [vue()],
   resolve: {
     alias: {
@@ -30,13 +30,11 @@ export default defineConfig({
     }
   },
   server: {
-    // Во время разработки проксируем запросы к API
     proxy: {
       '/api': 'http://localhost:3000'
     }
   },
   build: {
-    // Собираем в client/dist
     outDir: '../client/dist',
     emptyOutDir: true
   }
