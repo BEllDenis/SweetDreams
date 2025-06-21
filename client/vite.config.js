@@ -22,7 +22,7 @@ import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
   root: 'client',             // Указывает корень проекта, где лежит index.html
-  base: './',
+  base: '/',
   plugins: [vue()],
   resolve: {
     alias: {
@@ -37,6 +37,5 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',            // Папка сборки внутри client/
-    emptyOutDir: true
   }
 })
