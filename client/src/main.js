@@ -23,9 +23,9 @@ import App from './App.vue'
 // В режиме разработки используем переменную окружения VITE_API_URL (например, http://localhost:3000)
 // В продакшене обращаемся по относительному пути '/api'
 
-import axios from 'axios'
-axios.defaults.baseURL = '/api'
-axios.defaults.withCredentials = true
+import axios from 'axios';
+axios.defaults.baseURL = '/api';
+axios.defaults.withCredentials = true;
 
 // console.log(axios.defaults.baseURL);
 
