@@ -25,11 +25,10 @@ export default defineConfig({
   base: './',
   plugins: [vue()],
   resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./client/src', import.meta.url))
-    }
+    alias: {'@': fileURLToPath(new URL('./client/src', import.meta.url)) }
   },
   server: {
+    // Для локального dev-сервера
     proxy: {
       '/api': 'http://localhost:3000'
     }
