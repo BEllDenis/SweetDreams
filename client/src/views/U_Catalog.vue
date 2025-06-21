@@ -106,7 +106,7 @@ export default {
     },
     async LoadProducts() {
       
-      let response = await axios.get('api/catalog', {
+      let response = await axios.get('/catalog', {
         params: {
           SelectedCategories: this.SelectedCategories,
           SelectedTypeOfSort: this.SelectedTypeOfSort

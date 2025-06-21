@@ -34,7 +34,7 @@ export default {
       });
     },
     async LoadNewProducts() {
-      let response = await axios.get('api/new_products', {});
+      let response = await axios.get('/new_products', {});
 
       this.NewProducts = response.data;
       
