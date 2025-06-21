@@ -10,7 +10,6 @@ import U_LogIn from './views/U_LogIn.vue'
 import { RouterView } from 'vue-router'
 
 import axios from 'axios'
-axios.defaults.baseURL = "http://localhost:3000"
 
 export default {
   components: {
