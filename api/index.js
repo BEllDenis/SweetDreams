@@ -93,7 +93,7 @@ app.use(cors({
 
 
 // Environment variables
-const MONGO_URI = 'mongodb://localhost:27017/SweetDreams';
+const MONGO_URI = 'mongodb+srv://vercel-admin-user-6854cb454214172350a47361:p5MODLyhoJcI8zTY@cluster0.2cdsn0y.mongodb.net/SweetDreams?retryWrites=true&w=majority';
 
 
 // --- Подключение к MongoDB ---
