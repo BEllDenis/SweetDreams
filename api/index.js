@@ -93,7 +93,7 @@ app.use(cors({
 
 
 // Environment variables
-const MONGO_URI = 'mongodb://92.37.142.121:27017/SweetDreams?authSource=admin';
+const MONGO_URI = 'mongodb://92.37.142.121:27017/SweetDreams';
 
 
 // --- Подключение к MongoDB ---
