@@ -541,5 +541,4 @@ app.delete('/basket_products/delete', async function(req,res) {
 
 
 // В конце экспортируем handler
-const handler = serverless(app);
-module.exports = handler;
+module.exports = serverless(app);
