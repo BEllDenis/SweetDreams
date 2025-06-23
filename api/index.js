@@ -97,7 +97,11 @@ const MONGO_URI = process.env.MONGO_URI;
 
 // --- Подключение к MongoDB ---
 // Задайте MONGO_URI и SESSION_SECRET в настройках Vercel Environment Variables
-mongoose.connect(MONGO_URI);
+mongoose.connect(MONGO_URI, {
+    serverSelectionTimeoutMS: 10000,
+    socketTimeoutMS: 45000,
+    maxPoolSize: 10
+});
 
 // --- Сессии в MongoDB ---
 const store = new MongoDBSession({
