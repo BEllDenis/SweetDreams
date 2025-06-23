@@ -91,7 +91,7 @@ app.use(cors({
   methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS']
 }));
 
-
+console.log('fwwfwfwfwfwfwfwf')
 
 // Environment variables
 const MONGO_URI = process.env.MONGO_URI;
