@@ -93,15 +93,15 @@ app.use(cors({
 
 
 // Environment variables
-// const MONGO_URI = ;
+const MONGO_URI = 'mongodb://admin:k5w5zc_qcWYn5a8@51.250.108.238:27017/SweetDreams';
 
 // --- Подключение к MongoDB ---
 // Задайте MONGO_URI и SESSION_SECRET в настройках Vercel Environment Variables
-mongoose.connect('mongodb://admin:k5w5zc_qcWYn5a8@51.250.108.238:27017/SweetDreams');
+mongoose.connect(MONGO_URI);
 
 // --- Сессии в MongoDB ---
 const store = new MongoDBSession({
-  uri: 'mongodb://admin:k5w5zc_qcWYn5a8@51.250.108.238:27017/SweetDreams',
+  uri: MONGO_URI,
   collection: 'userSessions'
 });
 
