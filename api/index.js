@@ -82,14 +82,21 @@ const allowedOrigins = [
   'https://sweet-dreams-confectionery.ru',
   'https://www.sweet-dreams-confectionery.ru'
 ];
-app.use(cors({
+
+const corsOptions = {
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
     callback(new Error(`CORS blocked for ${origin}`));
   },
   credentials: true,
-  methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS']
-}));
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204
+};
+
+app.use(cors(corsOptions));
 
 // Environment variables
 const MONGO_URI = process.env.MONGO_URI;
