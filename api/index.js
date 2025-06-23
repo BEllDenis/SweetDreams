@@ -95,7 +95,7 @@ app.use(cors({
 // Environment variables
 // const MONGO_URI = 'mongodb://admin:k5w5zc_qcWYn5a8@51.250.108.238:27017/SweetDreams';
 
-const connectToDB = require('./db');
+const connectToDB = require('../db');
 app.use(async (req, res, next) => {
   try {
     await connectToDB();
