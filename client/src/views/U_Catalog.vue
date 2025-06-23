@@ -111,7 +111,7 @@ export default {
           SelectedCategories: this.SelectedCategories,
           SelectedTypeOfSort: this.SelectedTypeOfSort
         }
-      });
+      }, {withCredentials:true});
 
       this.Products = response.data;
 

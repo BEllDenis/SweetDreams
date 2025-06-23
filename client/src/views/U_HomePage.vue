@@ -34,7 +34,7 @@ export default {
       });
     },
     async LoadNewProducts() {
-      let response = await axios.get('/new_products', {});
+      let response = await axios.get('/new_products', {withCredentials:true});
 
       this.NewProducts = response.data;
       
