@@ -102,7 +102,8 @@ mongoose.connect(MONGO_URI, {
     serverSelectionTimeoutMS: 10000,
     socketTimeoutMS: 45000,
     maxPoolSize: 10
-});
+}).then(() => console.log('DB connected'))
+  .catch(err => console.error('DB error', err));
 
 // --- Сессии в MongoDB ---
 const store = new MongoDBSession({
