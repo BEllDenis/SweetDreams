@@ -93,7 +93,7 @@ app.use(cors({
 
 
 // Environment variables
-const MONGO_URI = 'mongodb://admin:k5w5zc_qcWYn5a8@51.250.108.238:27017/SweetDreams';
+const MONGO_URI = process.env.MONGO_URI;
 
 // --- Подключение к MongoDB ---
 // Задайте MONGO_URI и SESSION_SECRET в настройках Vercel Environment Variables
