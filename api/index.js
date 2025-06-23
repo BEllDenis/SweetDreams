@@ -91,7 +91,6 @@ app.use(cors({
   methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS']
 }));
 
-alert('К серваку подрубились');
 
 
 // Environment variables
