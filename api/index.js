@@ -91,6 +91,8 @@ app.use(cors({
   methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS']
 }));
 
+alert('К серваку подрубились');
+
 
 // Environment variables
 const MONGO_URI = process.env.MONGO_URI;
