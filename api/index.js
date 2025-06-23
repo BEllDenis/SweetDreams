@@ -93,25 +93,15 @@ app.use(cors({
 
 
 // Environment variables
-// const MONGO_URI = 'mongodb://admin:k5w5zc_qcWYn5a8@51.250.108.238:27017/SweetDreams';
+// const MONGO_URI = ;
 
-const connectToDB = require('../db');
-app.use(async (req, res, next) => {
-  try {
-    await connectToDB();
-    next();
-  } catch (err) {
-    console.error('DB connection err', err);
-    res.status(500).send('DB error');
-  }
-});
 // --- Подключение к MongoDB ---
 // Задайте MONGO_URI и SESSION_SECRET в настройках Vercel Environment Variables
-mongoose.connect(MONGO_URI);
+mongoose.connect('mongodb://admin:k5w5zc_qcWYn5a8@51.250.108.238:27017/SweetDreams');
 
 // --- Сессии в MongoDB ---
 const store = new MongoDBSession({
-  uri: MONGO_URI,
+  uri: 'mongodb://admin:k5w5zc_qcWYn5a8@51.250.108.238:27017/SweetDreams',
   collection: 'userSessions'
 });
 
