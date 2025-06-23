@@ -207,7 +207,7 @@ app.get('/users', async function (req, res) {
 app.get('/new_products', async function (req, res) {
     let NewProducts = await Products.find().sort({createdAt: -1}).limit(4);
 
-    res.send(NewProducts);
+    res.json(NewProducts);
 });
 
 app.get('/catalog', async function (req, res) {
